@@ -36,11 +36,18 @@ public class MutantService {
 	}
 
 	public boolean processDna(String[] dna) {
-		Integer horizontal = 0;
-		Integer vertical = 0;
 		
+		DNA dnaModel = anylize(dna);
+
+		repository.save(dnaModel);
+		return dnaModel.getIsMutant();
+	}
+
+	public DNA anylize(String[] dna) {
 		DNA dnaModel = new DNA();
 		dnaModel.setIsMutant(false);	
+		Integer horizontal = 0;
+		Integer vertical = 0;
 		while(vertical < dna.length) {
 			dnaModel.getGenes().add(dna[vertical]);
 			char[] aux = dna[vertical].toCharArray();
@@ -55,9 +62,7 @@ public class MutantService {
 			}
 			vertical++;
 		}
-
-		repository.save(dnaModel);
-		return dnaModel.getIsMutant();
+		return dnaModel;
 	}
 
 	private static boolean lookupVertical(int vertical, char character, String[] dna) {
